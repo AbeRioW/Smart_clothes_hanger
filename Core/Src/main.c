@@ -18,11 +18,15 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "adc.h"
 #include "gpio.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "oled.h"
+#include "string.h"
+#include "stdio.h"
+#include "motor.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -65,7 +69,9 @@ int main(void)
 {
 
   /* USER CODE BEGIN 1 */
-
+  float adcy,adcy1;
+	uint16_t adcx = 0,adcx1 = 0;
+	char data_light[20]={0},data_light1[20]={0};
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -86,13 +92,13 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  MX_ADC1_Init();
+  MX_ADC2_Init();
   /* USER CODE BEGIN 2 */
 	OLED_Init();
 	OLED_ColorTurn(0);
   OLED_DisplayTurn(0);
 	OLED_Clear();
-	OLED_ShowString(1,1,(uint8_t*)"123",16,1);
-	OLED_Refresh();
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -102,6 +108,31 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+		HAL_ADC_Start(&hadc1);   
+		HAL_ADC_PollForConversion(&hadc1,10); 
+		adcx = (uint16_t)HAL_ADC_GetValue(&hadc1);  
+		adcy = (float)adcx*3.3/4096;             
+		sprintf(data_light,"Light:%.3f",adcy);
+		OLED_ShowString(0,0,(uint8_t*)data_light,16,1);
+			OLED_Refresh();
+		
+				HAL_ADC_Start(&hadc2);   
+		HAL_ADC_PollForConversion(&hadc2,10); 
+		adcx1 = (uint16_t)HAL_ADC_GetValue(&hadc2);  
+		adcy1 = (float)adcx1*3.3/4096;              //guangzhao 
+		sprintf(data_light1,"Rain:%.3f",adcy1);
+		OLED_ShowString(0,20,(uint8_t*)data_light1,16,1);
+
+		
+//						direction = 0; //Turn to loosen the soil in a positive direction
+//				for(int i=0;i<(motor_angle_cal(90))/8;i++)
+//				{
+//					for(uint8_t step=0;step<8;step++)
+//					{	
+//							motor_controld(step,direction);
+//							HAL_Delay(1);
+//					}
+//				}
   }
   /* USER CODE END 3 */
 }
@@ -114,6 +145,7 @@ void SystemClock_Config(void)
 {
   RCC_OscInitTypeDef RCC_OscInitStruct = {0};
   RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
+  RCC_PeriphCLKInitTypeDef PeriphClkInit = {0};
 
   /** Initializes the RCC Oscillators according to the specified parameters
   * in the RCC_OscInitTypeDef structure.
@@ -140,6 +172,12 @@ void SystemClock_Config(void)
   RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
 
   if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_ADC;
+  PeriphClkInit.AdcClockSelection = RCC_ADCPCLK2_DIV6;
+  if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK)
   {
     Error_Handler();
   }

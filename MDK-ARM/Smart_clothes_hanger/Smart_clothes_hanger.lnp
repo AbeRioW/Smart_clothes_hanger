@@ -1,0 +1,23 @@
+--cpu Cortex-M3
+"smart_clothes_hanger\startup_stm32f103xb.o"
+"smart_clothes_hanger\main.o"
+"smart_clothes_hanger\gpio.o"
+"smart_clothes_hanger\stm32f1xx_it.o"
+"smart_clothes_hanger\stm32f1xx_hal_msp.o"
+"smart_clothes_hanger\stm32f1xx_hal_gpio_ex.o"
+"smart_clothes_hanger\stm32f1xx_hal.o"
+"smart_clothes_hanger\stm32f1xx_hal_rcc.o"
+"smart_clothes_hanger\stm32f1xx_hal_rcc_ex.o"
+"smart_clothes_hanger\stm32f1xx_hal_gpio.o"
+"smart_clothes_hanger\stm32f1xx_hal_dma.o"
+"smart_clothes_hanger\stm32f1xx_hal_cortex.o"
+"smart_clothes_hanger\stm32f1xx_hal_pwr.o"
+"smart_clothes_hanger\stm32f1xx_hal_flash.o"
+"smart_clothes_hanger\stm32f1xx_hal_flash_ex.o"
+"smart_clothes_hanger\stm32f1xx_hal_exti.o"
+"smart_clothes_hanger\system_stm32f1xx.o"
+"smart_clothes_hanger\oled.o"
+--strict --scatter "Smart_clothes_hanger\Smart_clothes_hanger.sct"
+--summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list "Smart_clothes_hanger.map" -o Smart_clothes_hanger\Smart_clothes_hanger.axf

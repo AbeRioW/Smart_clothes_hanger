@@ -29,7 +29,8 @@ extern "C" {
 #include "main.h"
 
 /* USER CODE BEGIN Includes */
-
+enum BUTTON {LEFT,MIDLE,RIGHT,UNPRESS};
+extern enum BUTTON botton;
 /* USER CODE END Includes */
 
 /* USER CODE BEGIN Private defines */

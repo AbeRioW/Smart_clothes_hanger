@@ -33,3 +33,5 @@ smart_clothes_hanger\main.o: ../BSP/oled.h
 smart_clothes_hanger\main.o: C:\Program Files (x86)\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
 smart_clothes_hanger\main.o: C:\Program Files (x86)\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
 smart_clothes_hanger\main.o: ../BSP/motor.h
+smart_clothes_hanger\main.o: ../BSP/DHT11.h
+smart_clothes_hanger\main.o: C:\Program Files (x86)\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h

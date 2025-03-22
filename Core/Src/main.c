@@ -27,11 +27,15 @@
 #include "string.h"
 #include "stdio.h"
 #include "motor.h"
+#include "DHT11.h"
+
+uint8_t data_t=30,data_r=3,data_h=50;
+float data_l = 0.3;
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
-
+static void ui_setting(void);
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -122,8 +126,55 @@ int main(void)
 		adcy1 = (float)adcx1*3.3/4096;              //guangzhao 
 		sprintf(data_light1,"Rain:%.3f",adcy1);
 		OLED_ShowString(0,20,(uint8_t*)data_light1,16,1);
-
+		OLED_Refresh();
+  
+		DHT11();
 		
+		if(adcy<data_l)  //光照太强
+		{
+				direction = 0; //Turn to loosen the soil in a positive direction
+				for(int i=0;i<(motor_angle_cal(90))/8;i++)
+				{
+					for(uint8_t step=0;step<8;step++)
+					{	
+							motor_controld(step,direction);
+							HAL_Delay(1);
+					}
+				}				
+		}
+		
+		if(adcy1<data_r)
+		{
+								direction = 1; //Turn to loosen the soil in a positive direction
+				for(int i=0;i<(motor_angle_cal(90))/8;i++)
+				{
+					for(uint8_t step=0;step<8;step++)
+					{	
+							motor_controld(step,direction);
+							HAL_Delay(1);
+					}
+				}			
+		}
+		
+		
+		if(botton==MIDLE)  
+		{
+			  botton = UNPRESS;
+			  OLED_Clear();
+				ui_setting();			   
+		}
+		
+		if(botton==LEFT)
+		{
+			  botton = UNPRESS;
+				HAL_GPIO_TogglePin(GPIOB, LED1_Pin);
+		}
+		
+		if(botton==RIGHT)
+		{
+			  botton = UNPRESS;
+				HAL_GPIO_TogglePin(GPIOB, LED2_Pin);
+		}
 //						direction = 0; //Turn to loosen the soil in a positive direction
 //				for(int i=0;i<(motor_angle_cal(90))/8;i++)
 //				{
@@ -184,6 +235,105 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
+static void ui_setting(void)
+{
+	  char show_data[10],show_data1[10],show_data2[10],show_data3[10];
+	  int position = 0;
+		OLED_ShowString(30,0,(uint8_t*)"Setting",8,1);
+		OLED_Refresh();
+	  while(1)
+		{
+				sprintf(show_data,"Light:%0.2f",data_l);
+				OLED_ShowString(0,10,(uint8_t*)show_data,8,position==0?0:1);  //关照
+			
+			  sprintf(show_data1,"humidity:%02d",data_h);
+			  OLED_ShowString(0,20,(uint8_t*)show_data1,8,position==1?0:1); //湿度
+			
+			  sprintf(show_data2,"humidity:%02d",data_t);
+				OLED_ShowString(0,30,(uint8_t*)show_data2,8,position==2?0:1);//温度
+			
+			  sprintf(show_data3,"Rain:%02d",data_r);
+				OLED_ShowString(0,40,(uint8_t*)show_data3,8,position==3?0:1);    //下雨
+				OLED_ShowString(0,50,(uint8_t*)"Back",8,position==4?0:1);
+				OLED_Refresh();
+			
+			 if(botton==MIDLE)
+			 {
+					 botton = UNPRESS;
+				   position++;
+				   if(position>4)
+						 position=0;
+			 }
+			 
+			 if(botton==LEFT)
+			 {
+				   botton = UNPRESS;
+					 switch(position)
+					 {	
+						 case 0:  //光照
+								data_l-=0.1;
+						    if(data_l<0)
+									 data_l=4;
+							 break;
+						case 1:  //湿度
+								data_h-=1;
+						    if(data_h<0)
+									 data_h=60;
+							 break;
+
+							case 2:  //温度
+								data_t-=1;
+						    if(data_t<0)
+									 data_t=40;
+							 break;
+						 case 3:  //RAIN
+								data_r-=1;
+						    if(data_r<0)
+									 data_r=4;
+							 break;
+
+					 }
+			 }
+			 
+			 if(botton==RIGHT)
+			 {
+				   botton = UNPRESS;
+					 switch(position)
+					 {	
+						 case 0:  //光照
+								data_l+=0.1;
+						    if(data_l>4)
+									 data_l=0;
+							 break;
+							case 1:  //
+								data_h+=1;
+						    if(data_h>60)
+									 data_h=0;
+							 break;
+						  case 2:  //温度
+								data_t+=1;
+						    if(data_t>40)
+									 data_t=0;
+							 break;
+							case 3:  //湿度
+								data_r+=1;
+						    if(data_r>4)
+									 data_r=0;
+							 break;
+
+
+							case 4:  //
+								  OLED_Clear();
+									return;
+							 break;
+					 }
+			 }
+			 
+		}
+	  
+}
+
+
 
 /* USER CODE END 4 */
 

@@ -27,11 +27,15 @@ smart_clothes_hanger\main.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_a
 smart_clothes_hanger\main.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash.h
 smart_clothes_hanger\main.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash_ex.h
 smart_clothes_hanger\main.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h
+smart_clothes_hanger\main.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h
 smart_clothes_hanger\main.o: ../Core/Inc/adc.h
+smart_clothes_hanger\main.o: ../Core/Inc/dma.h
+smart_clothes_hanger\main.o: ../Core/Inc/usart.h
+smart_clothes_hanger\main.o: C:\Program Files (x86)\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
 smart_clothes_hanger\main.o: ../Core/Inc/gpio.h
 smart_clothes_hanger\main.o: ../BSP/oled.h
 smart_clothes_hanger\main.o: C:\Program Files (x86)\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
 smart_clothes_hanger\main.o: C:\Program Files (x86)\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
 smart_clothes_hanger\main.o: ../BSP/motor.h
 smart_clothes_hanger\main.o: ../BSP/DHT11.h
-smart_clothes_hanger\main.o: C:\Program Files (x86)\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
+smart_clothes_hanger\main.o: ../BSP/esp8266.h

@@ -3,6 +3,8 @@
 "smart_clothes_hanger\main.o"
 "smart_clothes_hanger\gpio.o"
 "smart_clothes_hanger\adc.o"
+"smart_clothes_hanger\dma.o"
+"smart_clothes_hanger\usart.o"
 "smart_clothes_hanger\stm32f1xx_it.o"
 "smart_clothes_hanger\stm32f1xx_hal_msp.o"
 "smart_clothes_hanger\stm32f1xx_hal_gpio_ex.o"
@@ -18,10 +20,12 @@
 "smart_clothes_hanger\stm32f1xx_hal_flash.o"
 "smart_clothes_hanger\stm32f1xx_hal_flash_ex.o"
 "smart_clothes_hanger\stm32f1xx_hal_exti.o"
+"smart_clothes_hanger\stm32f1xx_hal_uart.o"
 "smart_clothes_hanger\system_stm32f1xx.o"
 "smart_clothes_hanger\oled.o"
 "smart_clothes_hanger\motor.o"
 "smart_clothes_hanger\dht11.o"
+"smart_clothes_hanger\esp8266.o"
 --strict --scatter "Smart_clothes_hanger\Smart_clothes_hanger.sct"
 --summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers

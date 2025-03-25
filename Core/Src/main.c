@@ -19,6 +19,8 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "adc.h"
+#include "dma.h"
+#include "usart.h"
 #include "gpio.h"
 
 /* Private includes ----------------------------------------------------------*/
@@ -28,6 +30,7 @@
 #include "stdio.h"
 #include "motor.h"
 #include "DHT11.h"
+#include "esp8266.h"
 
 uint8_t data_t=30,data_r=3,data_h=50;
 float data_l = 0.3;
@@ -73,9 +76,11 @@ int main(void)
 {
 
   /* USER CODE BEGIN 1 */
+	static int i_count = 0;
   float adcy,adcy1;
 	uint16_t adcx = 0,adcx1 = 0;
 	char data_light[20]={0},data_light1[20]={0};
+	char show_data[30];
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -96,13 +101,16 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  MX_DMA_Init();
   MX_ADC1_Init();
   MX_ADC2_Init();
+  MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
 	OLED_Init();
 	OLED_ColorTurn(0);
   OLED_DisplayTurn(0);
 	OLED_Clear();
+	start_esp8266();
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -112,6 +120,7 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+		handle_esp8266();
 		HAL_ADC_Start(&hadc1);   
 		HAL_ADC_PollForConversion(&hadc1,10); 
 		adcx = (uint16_t)HAL_ADC_GetValue(&hadc1);  
@@ -128,6 +137,14 @@ int main(void)
 		OLED_ShowString(0,20,(uint8_t*)data_light1,16,1);
 		OLED_Refresh();
   
+		i_count++;
+		if(i_count/50)
+		{
+			i_count=0;
+			sprintf(show_data,"light:%.3f Rain:%.3f\r\n",adcy,adcy1);
+			send_wifi(show_data,27); 
+		}
+
 		DHT11();
 		
 		if(adcy<data_l)  //光照太强

@@ -1,4 +1,5 @@
 #include "dht11.h"
+#include "esp8266.h"
 /**
   * @brief  温湿度传感器主函数
   * @param  void
@@ -83,10 +84,11 @@ unsigned char DHT11_READ_BYTE(void)
   */
 unsigned char DHT11_READ_DATA(void)
 {
+	 static int i_count=0;
     uint8_t i;
     uint8_t data[5] = {0};
 		char dht11_data[11]={0};
-    
+    char show_data[20]={0};
     DHT11_START();                                  //  主机发送启动信号
     
     if(DHT11_Check())                               //  如果DHT11应答     
@@ -106,6 +108,15 @@ unsigned char DHT11_READ_DATA(void)
 					  //lcd1602_show_string(0,0,dht11_data);
 					  OLED_ShowString(0,40,(uint8_t*)dht11_data,8,1);
 						OLED_Refresh();
+					
+					i_count++;
+					if(i_count/50)
+					{
+							i_count=0;
+							sprintf(show_data,"DHT11:%d.%d%%RH %d.%dC\r\n",data[0],data[1],data[2],data[3]);
+						  send_wifi(show_data,19);
+					}
+
 						if((data[0]>=50)||(data[2]>=30))
 						{
 						}

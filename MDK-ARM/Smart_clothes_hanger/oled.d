@@ -29,6 +29,7 @@ smart_clothes_hanger\oled.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_a
 smart_clothes_hanger\oled.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash.h
 smart_clothes_hanger\oled.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash_ex.h
 smart_clothes_hanger\oled.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h
+smart_clothes_hanger\oled.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h
 smart_clothes_hanger\oled.o: C:\Program Files (x86)\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
 smart_clothes_hanger\oled.o: ..\BSP\oledfont.h
 smart_clothes_hanger\oled.o: C:\Program Files (x86)\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
